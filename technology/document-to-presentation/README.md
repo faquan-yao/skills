@@ -110,7 +110,15 @@ bash ~/.cursor/skills/custom/technology/document-to-presentation/scripts/export-
 
 ## 示例产出
 
-仓库内试跑：`报告/PPT/user-project-info/`
+仓库内试跑：`报告/PPT/user-project-info/`、`报告/PPT/developer-onboarding-report/`
+
+## 下一步：口播视频
+
+PPT 与口播稿就绪后，使用姊妹 Skill **[presentation-to-video](../presentation-to-video/README.md)** 生成 `video/narrated.mp4`（Edge TTS + ffmpeg）。
+
+```
+用 presentation-to-video 把 报告/PPT/developer-onboarding-report 生成口播视频
+```
 
 ## 延伸阅读
 

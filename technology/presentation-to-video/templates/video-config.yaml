@@ -1,0 +1,11 @@
+# 口播视频默认配置（可复制到 PPT/{basename}/video-config.yaml 覆盖）
+
+voice: zh-CN-YunxiNeural
+rate: "+0%"
+volume: "+0%"
+pitch: "+0Hz"
+resolution: 1920x1080
+fps: 30
+min_slide_seconds: 2
+padding_seconds: 0.3
+output: video/narrated.mp4
