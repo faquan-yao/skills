@@ -10,26 +10,34 @@ disable-model-invocation: true
 
 # PPT + 口播稿 → 口播视频
 
-将 [`document-to-presentation`](../document-to-presentation/SKILL.md) 产出合成为 **`video/narrated.mp4`**。
+将 [`document-to-presentation`](../document-to-presentation/SKILL.md) 产出合成为 **`{产出目录}/video/{basename}/narrated.mp4`**。
 
-## 输入（目录 `PPT/{basename}/`）
+## 路径约定
+
+**{项目根}** = 当前工作区或被分析项目的根目录。与上游 skill 一致。
+
+**{产出目录}** = 用户指定的输出目录；若用户未指定，默认为 `{项目根}/项目汇总/`。
+
+## 输入（目录 `{产出目录}/PPT/{basename}/`）
 
 | 文件 | 必需 |
 |------|------|
 | `narration-script.md` | 是 |
 | `slides.marp.md` | 是（优先；保留 tech-briefing 样式） |
-| `video-config.yaml` | 否（覆盖默认音色等） |
+| `video-config.yaml` | 否（可放在 PPT 目录或 `{产出目录}/video/{basename}/` 覆盖默认音色等） |
 
 ## 输出
 
 ```
-PPT/{basename}/video/
+{产出目录}/video/{basename}/
 ├── slides/          # PNG 逐页
 ├── audio/           # MP3 逐页配音
 ├── segments/        # 逐页 MP4
-├── narrated.mp4     # 最终成片
+├── narrated.mp4     # 最终成片（必交付）
 └── generation-log.md
 ```
+
+输入仍从 `{产出目录}/PPT/{basename}/` 读取；视频产物写入 `{产出目录}/video/{basename}/`，与 PPT 目录平级。
 
 ## 前置条件
 
@@ -53,7 +61,7 @@ PPT/{basename}/video/
 ```bash
 pip install -r ~/.cursor/skills/custom/technology/presentation-to-video/scripts/requirements.txt
 python ~/.cursor/skills/custom/technology/presentation-to-video/scripts/generate-video.py \
-  "报告/PPT/developer-onboarding-report"
+  "项目汇总/PPT/developer-onboarding-report"
 ```
 
 **Windows PowerShell：**
@@ -61,7 +69,7 @@ python ~/.cursor/skills/custom/technology/presentation-to-video/scripts/generate
 ```powershell
 py -3 -m pip install -r "$env:USERPROFILE\.cursor\skills\custom\technology\presentation-to-video\scripts\requirements.txt"
 py -3 "$env:USERPROFILE\.cursor\skills\custom\technology\presentation-to-video\scripts\generate-video.py" `
-  "报告/PPT/developer-onboarding-report"
+  "项目汇总/PPT/developer-onboarding-report"
 ```
 
 ### 阶段 0：检测
@@ -73,12 +81,12 @@ py -3 "$env:USERPROFILE\.cursor\skills\custom\technology\presentation-to-video\s
 ### 阶段 4：校验
 
 - 口播解析页数 = PNG 页数
-- `narrated.mp4` 存在且 > 1MB
-- 总时长与口播稿预估 ±25%（记入 generation-log.md）
+- `narrated.mp4` 存在于 `{产出目录}/video/{basename}/` 且 > 1MB
+- 总时长与口播稿预估 ±25%（记入 `{产出目录}/video/{basename}/generation-log.md`）
 
 ## 配置
 
-复制 [templates/video-config.yaml](templates/video-config.yaml) 到 `PPT/{basename}/video-config.yaml` 可覆盖：
+复制 [templates/video-config.yaml](templates/video-config.yaml) 到 `{产出目录}/PPT/{basename}/video-config.yaml` 或 `{产出目录}/video/{basename}/video-config.yaml` 可覆盖：
 
 - `voice`：默认 `zh-CN-YunxiNeural`
 - `rate`：诙谐口播可设 `-5%`

@@ -15,6 +15,21 @@ version: 1.0.0
 
 本 Skill **不**用于终端用户营销。不要优化「说服安装」；应优化**理解、导航、验证**。
 
+## 路径约定
+
+**{项目根}** = 被分析开源仓库的根目录（通常为工作区根）。阶段 0 须确认。
+
+**{产出目录}** = 用户指定的输出目录；若用户未指定，默认为 `{项目根}/项目汇总/`。阶段 0 须确认并创建（不存在则 `mkdir`）。
+
+## 产出路径（必遵）
+
+| 文件 | 路径 |
+|------|------|
+| 草稿 | `{产出目录}/dev-onboarding-scratch.md` |
+| 最终报告 | `{产出目录}/developer-onboarding-report.md` |
+
+用户指定输出目录时，所有产物直接写入该目录下，不再追加 `项目汇总/` 子目录。
+
 ## 前置条件
 
 - 对目标仓库有读权限（本地 clone 或工作区）
@@ -55,7 +70,7 @@ version: 1.0.0
 
 1. 按序阅读：`README*`、`CONTRIBUTING*`、`ARCHITECTURE*`、`docs/` 索引、`CHANGELOG*`、包清单（`package.json`、`go.mod`、`Cargo.toml`、`pyproject.toml` 等）。
 2. 识别：语言、monorepo 或单包、入口（`cmd/`、`main.*`、`src/index.*`）、CI 配置（`.github/workflows` 等）。
-3. 草稿保存至 `dev-onboarding-scratch.md`（仓库根目录或用户指定输出目录）。
+3. 草稿保存至 `{产出目录}/dev-onboarding-scratch.md`。
 4. 当你能用**一段技术文字**描述项目时停止。
 
 各方面的发现提示与典型文件位置见 [references/extraction-checklist.md](references/extraction-checklist.md)。
@@ -95,7 +110,7 @@ version: 1.0.0
 2. 填满各节；用仓库具体内容替换占位符。
 3. 附加 **必读 10 文件**（有序，每文件一行理由）。
 4. 至少包含 **两张 Mermaid 图**：系统上下文或容器图 + 主链路时序图（图中节点标签与说明用中文，技术组件名可保留英文）。
-5. 交付报告。默认文件名 `developer-onboarding-report.md`，除非用户指定路径。
+5. 交付报告至 `{产出目录}/developer-onboarding-report.md`。
 6. **全文中文**：章节标题、叙述、表格说明均为简体中文；路径、命令、函数名、配置键保留原文。
 
 ## 产出质量门槛

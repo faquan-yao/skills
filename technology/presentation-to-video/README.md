@@ -9,25 +9,25 @@
 ## 快速开始
 
 ```
-用 presentation-to-video 把 报告/PPT/developer-onboarding-report 生成口播视频
+用 presentation-to-video 把 项目汇总/PPT/developer-onboarding-report 生成口播视频
 ```
 
-或本地执行：
+或本地执行（路径相对目标项目根目录；默认 `{产出目录}` = `{项目根}/项目汇总/`）：
 
 ```powershell
 py -3 -m pip install -r "$env:USERPROFILE\.cursor\skills\custom\technology\presentation-to-video\scripts\requirements.txt"
 py -3 "$env:USERPROFILE\.cursor\skills\custom\technology\presentation-to-video\scripts\generate-video.py" `
-  "d:\work\github\Agent-Reach\报告\PPT\developer-onboarding-report"
+  "项目汇总/PPT/developer-onboarding-report"
 ```
 
-产出：`报告/PPT/{basename}/video/narrated.mp4`
+产出：`{产出目录}/video/{basename}/narrated.mp4`（默认 `{项目根}/项目汇总/video/{basename}/narrated.mp4`）
 
 ## 管线
 
 ```
-slides.marp.md  ──► video/slides/*.png     (Marp CLI)
-narration-script.md ──► video/audio/*.mp3  (Edge TTS)
-PNG + MP3 ──► video/segments/*.mp4 ──► narrated.mp4  (ffmpeg)
+slides.marp.md  ──► video/{basename}/slides/*.png     (Marp CLI)
+narration-script.md ──► video/{basename}/audio/*.mp3  (Edge TTS)
+PNG + MP3 ──► video/{basename}/segments/*.mp4 ──► narrated.mp4  (ffmpeg)
 ```
 
 ## 环境依赖
@@ -47,12 +47,12 @@ py -3 -m pip install -r scripts/requirements.txt -i https://pypi.tuna.tsinghua.e
 
 ## 配置（可选）
 
-在 `PPT/{basename}/video-config.yaml`：
+在 `{产出目录}/PPT/{basename}/video-config.yaml` 或 `{产出目录}/video/{basename}/video-config.yaml`：
 
 ```yaml
 voice: zh-CN-YunxiNeural
 rate: "-5%"
-output: video/narrated.mp4
+output: narrated.mp4
 ```
 
 ## 目录结构

@@ -9,6 +9,21 @@ version: 1.0.0
 
 从任意开源仓库提取**面向软件使用者（非开发者）**的项目信息，按**六段叙事**组织为一份结构化文档。
 
+## 路径约定
+
+**{项目根}** = 被分析开源仓库的根目录（通常为工作区根）。阶段 0 须确认。
+
+**{产出目录}** = 用户指定的输出目录；若用户未指定，默认为 `{项目根}/项目汇总/`。阶段 0 须确认并创建（不存在则 `mkdir`）。
+
+## 产出路径（必遵）
+
+| 文件 | 路径 |
+|------|------|
+| 草稿 | `{产出目录}/user-intro-scratch.md` |
+| 最终文档 | `{产出目录}/user-project-info.md` |
+
+用户指定输出目录时，所有产物直接写入该目录下，不再追加 `项目汇总/` 子目录。
+
 ## 前置条件
 
 - 对目标仓库或官方文档有读权限
@@ -49,7 +64,7 @@ version: 1.0.0
 5. 功能/渠道/平台概述（channels、features、platforms）
 6. **不深入** `src/`、架构 internals、CONTRIBUTING（除非影响用户门槛）
 
-草稿：`user-intro-scratch.md`。  
+草稿：`{产出目录}/user-intro-scratch.md`。  
 停止条件：能写出**一句用户向定位** + **一个具体使用场景**。
 
 提取问题见 [references/six-segment-guide.md](references/six-segment-guide.md)。
@@ -73,7 +88,7 @@ version: 1.0.0
 
 1. 按 [templates/user-project-info.md](templates/user-project-info.md) 结构输出。
 2. 填满六段；可选补充「日常能力摘要」「安全与隐私（用户向）」。
-3. 默认文件名：`user-project-info.md`（用户可指定路径）。
+3. 交付至 `{产出目录}/user-project-info.md`。
 
 ### 可选：轻量核对
 

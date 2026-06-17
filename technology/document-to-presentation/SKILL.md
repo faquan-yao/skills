@@ -11,22 +11,32 @@ disable-model-invocation: true
 
 # 文档 → 专业 PPTX + 诙谐口播稿
 
-从任意 Markdown/长文档提取关键信息，产出**演示套件**（统一放入 `PPT/{源文档名}/` 目录）。
+从任意 Markdown/长文档提取关键信息，产出**演示套件**（统一放入 `{产出目录}/PPT/{源文档basename}/`）。
 
 **核心原则：** 一条事实链、两种表达。PPT 必须专业版式，禁止白底 bullet 清单风。
+
+## 路径约定
+
+**{项目根}** = 当前工作区或被分析项目的根目录（不是 skill 安装目录、不是源文档所在子目录）。阶段 0 须确认。
+
+**{产出目录}** = 用户指定的输出目录；若用户未指定，默认为 `{项目根}/项目汇总/`。阶段 0 须确认并创建（不存在则 `mkdir`）。
+
+下文路径均相对 `{产出目录}`，除非标注为相对 `{项目根}`。
 
 ## 输出目录（必遵）
 
 ```
-{源文档父目录}/PPT/{源文档basename}/
+{产出目录}/PPT/{源文档basename}/
 ```
 
 | 源文档 | 产出目录 |
 |--------|----------|
-| `报告/user-project-info.md` | `报告/PPT/user-project-info/` |
-| `报告/developer-onboarding-report.md` | `报告/PPT/developer-onboarding-report/` |
+| `{项目根}/项目汇总/user-project-info.md` | `{产出目录}/PPT/user-project-info/` |
+| `{项目根}/docs/report.md` | `{产出目录}/PPT/report/` |
 
-阶段 0 须**创建目录**（不存在则 `mkdir`）。用户可指定其他根路径，但须保持 `PPT/{basename}/` 子结构。
+默认情况下 `{产出目录}` = `{项目根}/项目汇总/`，即 `{项目根}/项目汇总/PPT/{basename}/`。
+
+不得写入源文档同目录或 skill 安装目录。
 
 ## 产出文件
 
@@ -51,7 +61,7 @@ disable-model-invocation: true
 
 ```
 演示产出进度：
-- [ ] 阶段 0：侦察与参数 + 创建 PPT/{basename}/ 目录
+- [ ] 阶段 0：侦察与参数 + 确认 {产出目录} + 创建 PPT/{basename}/ 目录
 - [ ] 阶段 1：fact-kernel.md
 - [ ] 阶段 2：slide-outline.md + slides.marp.md + 导出 slides.pptx
 - [ ] 阶段 3：narration-script.md
@@ -71,14 +81,14 @@ disable-model-invocation: true
 
 ```powershell
 & "$env:USERPROFILE\.cursor\skills\custom\technology\document-to-presentation\scripts\export-pptx.ps1" `
-  -MarpFile "{源文档父目录}/PPT/{basename}/slides.marp.md"
+  -MarpFile "{产出目录}/PPT/{basename}/slides.marp.md"
 ```
 
 **macOS/Linux：**
 
 ```bash
 bash ~/.cursor/skills/custom/technology/document-to-presentation/scripts/export-pptx.sh \
-  "{源文档父目录}/PPT/{basename}/slides.marp.md"
+  "{产出目录}/PPT/{basename}/slides.marp.md"
 ```
 
 4. 验证 `slides.pptx` 存在且 > 50KB
@@ -101,7 +111,7 @@ bash ~/.cursor/skills/custom/technology/document-to-presentation/scripts/export-
 
 ## 反模式
 
-- 把 PPT 产出散落在源文档同目录（如 `报告/user-project-info-slides.marp.md`）
+- 把 PPT 产出写入源文档同目录（如 `docs/user-project-info-slides.marp.md`），而非 `{产出目录}/PPT/{basename}/`
 - 只交付 Marp 不导出 PPTX
 - 使用 `theme: default` 或满屏 bullet
 - 口播稿附全文统计、校验记录

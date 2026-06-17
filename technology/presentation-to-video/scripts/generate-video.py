@@ -32,13 +32,22 @@ DEFAULT_CONFIG = {
     "fps": 30,
     "min_slide_seconds": 2,
     "padding_seconds": 0.3,
-    "output": "video/narrated.mp4",
+    "output": "narrated.mp4",
 }
+
+
+def resolve_video_dir(ppt_dir: Path) -> Path:
+    """Map {产出目录}/PPT/{basename}/ → {产出目录}/video/{basename}/."""
+    return ppt_dir.parent.parent / "video" / ppt_dir.name
 
 
 def load_config(ppt_dir: Path) -> dict:
     cfg = dict(DEFAULT_CONFIG)
-    for candidate in (ppt_dir / "video-config.yaml", ppt_dir / "video" / "video-config.yaml"):
+    video_dir = resolve_video_dir(ppt_dir)
+    for candidate in (
+        ppt_dir / "video-config.yaml",
+        video_dir / "video-config.yaml",
+    ):
         if candidate.exists():
             with candidate.open(encoding="utf-8") as f:
                 cfg.update(yaml.safe_load(f) or {})
@@ -263,13 +272,14 @@ async def async_main(args: argparse.Namespace) -> int:
         )
 
     cfg = load_config(ppt_dir)
-    video_dir = ppt_dir / "video"
+    video_dir = resolve_video_dir(ppt_dir)
     slides_dir = video_dir / "slides"
     audio_dir = video_dir / "audio"
     segments_dir = video_dir / "segments"
-    output = ppt_dir / cfg["output"] if not Path(cfg["output"]).is_absolute() else Path(cfg["output"])
-    if not output.is_absolute():
-        output = (ppt_dir / cfg["output"]).resolve()
+    output_key = cfg["output"]
+    if not Path(output_key).is_absolute() and str(output_key).startswith("video/"):
+        output_key = str(Path(output_key).name)
+    output = Path(output_key) if Path(output_key).is_absolute() else video_dir / output_key
 
     check_command("ffmpeg")
     check_command("ffprobe")
@@ -332,7 +342,7 @@ def main() -> None:
     parser.add_argument(
         "ppt_dir",
         type=Path,
-        help="Path to PPT/{basename}/ directory",
+        help="Path to {产出目录}/PPT/{basename}/ input directory (video writes to sibling video/{basename}/)",
     )
     parser.add_argument("--skip-images", action="store_true", help="Reuse existing slide PNGs")
     parser.add_argument("--skip-tts", action="store_true", help="Reuse existing audio MP3s")

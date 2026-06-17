@@ -115,14 +115,14 @@ footer: '{演讲者} · {日期}'
 
 ```powershell
 & "$env:USERPROFILE\.cursor\skills\custom\technology\document-to-presentation\scripts\export-pptx.ps1" `
-  -MarpFile "{源文档父目录}/PPT/{basename}/slides.marp.md"
+  -MarpFile "{产出目录}/PPT/{basename}/slides.marp.md"
 ```
 
 **macOS/Linux：**
 
 ```bash
 ~/.cursor/skills/custom/technology/document-to-presentation/scripts/export-pptx.sh \
-  "{源文档父目录}/PPT/{basename}/slides.marp.md"
+  "{产出目录}/PPT/{basename}/slides.marp.md"
 ```
 
 导出后验证：`PPT/{basename}/slides.pptx` 存在且 > 50KB。
@@ -134,4 +134,4 @@ footer: '{演讲者} · {日期}'
 - 满屏表格无配色
 - 封面与内页无视觉区分
 - 只交付 `.marp.md` 不导出 `.pptx`
-- 产出文件散落在源文档同目录（应放入 `PPT/{basename}/`）
+- 产出文件散落在源文档同目录（应放入 `{产出目录}/PPT/{basename}/`）

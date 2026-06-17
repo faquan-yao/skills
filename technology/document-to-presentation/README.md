@@ -19,18 +19,20 @@
 ## 快速开始
 
 ```
-用 document-to-presentation 把 报告/user-project-info.md 做成 15 分钟产品宣讲，幽默度中等
+用 document-to-presentation 把 user-project-info.md 做成 15 分钟产品宣讲，幽默度中等
 ```
 
 ## 输出目录
 
-所有 PPT 相关文件放入：
+所有 PPT 相关文件放入 **{产出目录}** 下的 `PPT/{源文档basename}/`：
 
 ```
-{源文档父目录}/PPT/{源文档basename}/
+{产出目录}/PPT/{源文档basename}/
 ```
 
-示例：`报告/user-project-info.md` → **`报告/PPT/user-project-info/`**
+**{产出目录}** = 用户指定的输出目录；若用户未指定，默认为 `{项目根}/项目汇总/`。
+
+示例（默认）：源文档 `{项目根}/项目汇总/user-project-info.md` → 产出 **`{项目根}/项目汇总/PPT/user-project-info/`**
 
 ## 产出文件
 
@@ -48,16 +50,26 @@
 ### 目录示例
 
 ```
-报告/
-├── user-project-info.md          # 源文档
-└── PPT/
-    └── user-project-info/
-        ├── fact-kernel.md
-        ├── slide-outline.md
-        ├── slides.marp.md
-        ├── slides.pptx
-        ├── narration-script.md
-        └── presentation-scratch.md
+{项目根}/
+├── docs/                         # 源文档可在任意位置
+└── 项目汇总/                     # 默认 {产出目录}
+    ├── user-project-info.md
+    ├── developer-onboarding-report.md
+    ├── PPT/
+    │   └── user-project-info/
+    │       ├── fact-kernel.md
+    │       ├── slide-outline.md
+    │       ├── slides.marp.md
+    │       ├── slides.pptx
+    │       ├── narration-script.md
+    │       └── presentation-scratch.md
+    └── video/                    # presentation-to-video 产出
+        └── user-project-info/
+            ├── slides/
+            ├── audio/
+            ├── segments/
+            ├── narrated.mp4
+            └── generation-log.md
 ```
 
 ## 可调参数
@@ -67,7 +79,7 @@
 | 受众 | 混合（业务 + 技术） |
 | 时长 | 15 分钟 |
 | 幽默度 | 中 |
-| 输出目录 | `{源文档父目录}/PPT/{basename}/` |
+| 输出目录 | `{产出目录}/PPT/{basename}/`（默认 `{项目根}/项目汇总/PPT/{basename}/`） |
 
 ## Skill 目录结构
 
@@ -90,14 +102,14 @@ document-to-presentation/
 
 ```powershell
 & "$env:USERPROFILE\.cursor\skills\custom\technology\document-to-presentation\scripts\export-pptx.ps1" `
-  -MarpFile "报告/PPT/user-project-info/slides.marp.md"
+  -MarpFile "项目汇总/PPT/user-project-info/slides.marp.md"
 ```
 
 **macOS / Linux：**
 
 ```bash
 bash ~/.cursor/skills/custom/technology/document-to-presentation/scripts/export-pptx.sh \
-  "报告/PPT/user-project-info/slides.marp.md"
+  "项目汇总/PPT/user-project-info/slides.marp.md"
 ```
 
 默认输出同目录下的 `slides.pptx`。
@@ -110,14 +122,14 @@ bash ~/.cursor/skills/custom/technology/document-to-presentation/scripts/export-
 
 ## 示例产出
 
-仓库内试跑：`报告/PPT/user-project-info/`、`报告/PPT/developer-onboarding-report/`
+仓库内试跑：`项目汇总/PPT/user-project-info/`、`项目汇总/PPT/developer-onboarding-report/`
 
 ## 下一步：口播视频
 
-PPT 与口播稿就绪后，使用姊妹 Skill **[presentation-to-video](../presentation-to-video/README.md)** 生成 `video/narrated.mp4`（Edge TTS + ffmpeg）。
+PPT 与口播稿就绪后，使用姊妹 Skill **[presentation-to-video](../presentation-to-video/README.md)** 生成 `{产出目录}/video/{basename}/narrated.mp4`（Edge TTS + ffmpeg）。
 
 ```
-用 presentation-to-video 把 报告/PPT/developer-onboarding-report 生成口播视频
+用 presentation-to-video 把 项目汇总/PPT/developer-onboarding-report 生成口播视频
 ```
 
 ## 延伸阅读
